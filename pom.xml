@@ -78,6 +78,12 @@
             <version>21.1.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.akathist.maven.plugins.launch4j</groupId>
+            <artifactId>launch4j-maven-plugin</artifactId>
+            <version>2.1.2</version>
+            <type>maven-plugin</type>
+        </dependency>
     </dependencies>
     <build>
         <sourceDirectory>src</sourceDirectory>
