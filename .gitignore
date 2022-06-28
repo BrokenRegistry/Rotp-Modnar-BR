@@ -6,3 +6,10 @@ build.xml
 manifest.mf
 launch4j/Remnants/
 /target/
+.idea/
+.project
+bin/
+*.iml
+*.log
+*Test.java
+*.bak
