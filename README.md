@@ -2,7 +2,7 @@
 
 Remnants of the Precursors is a Java-based modernization of the original Master of Orion game from 1993. <br/>
 
-## Fork of Modnar MOD 
+### Fork of Modnar MOD 
 ### With BrokenRegistry Profiles Manager. <br/>
 
 The decription of the additions/changes by Modnar can be found there: <br/>
