@@ -1,0 +1,18 @@
+# listing of race directories
+
+Alkari
+Bulrathi
+Darlok
+EarlyGame
+GearHead
+Human
+JackTrades
+Klackon
+Meklar
+Monocle
+Mrrshan
+NeoHuman
+Psilon
+Sakkra
+Silicoid
+WarDemon
