@@ -16,3 +16,10 @@ The description of the additions/changes by BrokenRegistry can be found there: <
 Official website: https://www.remnantsoftheprecursors.com/<br/>
 Community subreddit: https://www.reddit.com/r/rotp/<br/>
 Download build: https://rayfowler.itch.io/remnants-of-the-precursors
+
+## What'New
+
+2026.06.29
+  - Copy of 1.02a_modnar_MOD39_newRaces
+  - Added Profiles Manager
+  - Added add-ons

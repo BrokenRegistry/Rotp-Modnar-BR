@@ -30,6 +30,7 @@ import rotp.model.empires.Race;
 import rotp.model.events.RandomEvents;
 import rotp.model.game.GameSession;
 import rotp.ui.NoticeMessage;
+import rotp.ui.UserPreferences;
 import rotp.ui.notifications.AdviceNotification;
 import rotp.ui.notifications.BombardSystemNotification;
 import rotp.util.Base;

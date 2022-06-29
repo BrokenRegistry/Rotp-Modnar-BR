@@ -29,6 +29,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.List;
+import rotp.mod.br.profiles.Profiles;
 import rotp.ui.BasePanel;
 import rotp.ui.BaseText;
 import rotp.ui.UserPreferences;
@@ -406,7 +407,8 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
 
     @Override
     public void keyPressed(KeyEvent e) {
-        switch(e.getKeyCode()) {
+        int k = e.getKeyCode();  // BR:
+        switch(k) {
             case KeyEvent.VK_ESCAPE:
                 close();
                 break;
@@ -414,6 +416,37 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
             case KeyEvent.VK_ENTER:
                 parent.advanceHelp();
                 break;
+            default: // BR:
+            	if(Profiles.processKey(k, e.isShiftDown(), "Modnar",
+            			options(), newGameOptions())) {
+            		alwaysStarGatesText.repaint(alwaysStarGatesStr());
+            		alwaysThoriumText.repaint(alwaysThoriumStr());
+            		challengeModeText.repaint(challengeModeStr());
+                    battleScoutText.repaint(battleScoutStr());
+                    companionWorldsText.repaint(companionWorldsStr());
+                    randomTechStartText.repaint(randomTechStartStr());
+                    customDifficultyText.repaint(customDifficultyStr());
+                    customDifficultyText.repaint(customDifficultyStr());
+                    dynamicDifficultyText.repaint(dynamicDifficultyStr());
+//                    missileSizeModifierText.repaint(missileSizeModifierStr());
+            	};
+            	// Needs to be done twice for the case both Galaxy size
+            	// and the number of opponents were changed !?
+            	if(Profiles.processKey(k, e.isShiftDown(), "Modnar",
+            			options(), newGameOptions())) {
+            		alwaysStarGatesText.repaint(alwaysStarGatesStr());
+            		alwaysThoriumText.repaint(alwaysThoriumStr());
+            		challengeModeText.repaint(challengeModeStr());
+                    battleScoutText.repaint(battleScoutStr());
+                    companionWorldsText.repaint(companionWorldsStr());
+                    randomTechStartText.repaint(randomTechStartStr());
+                    customDifficultyText.repaint(customDifficultyStr());
+                    customDifficultyText.repaint(customDifficultyStr());
+                    dynamicDifficultyText.repaint(dynamicDifficultyStr());
+//                    missileSizeModifierText.repaint(missileSizeModifierStr());
+            	};
+                buttonClick();
+                return;
         }
     }
     @Override

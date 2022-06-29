@@ -16,6 +16,8 @@
 package rotp;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +30,8 @@ import java.util.Properties;
  * to get more memory it uses the right jar file name.
  */
 public class RotpGovernor {
-    static String expectedROTPVersion = "1.02.39";
+    static String expectedROTPVersion = "1.04-Modnar-BR 22.06.28";
+    public static boolean GRAALVM_NATIVE = System.getProperty("org.graalvm.nativeimage.imagecode") != null;
 
     private static String governorVersion = null;
 
@@ -63,10 +66,30 @@ public class RotpGovernor {
         }
     }
 
+    // This needs to be moved to RotpGovernor, as "class only" packagiong of governor retains
+    // original Rotp.java, which means this method would be unavailable
+    public static BufferedImage toBufferedImage(Image img)
+    {
+        if (img instanceof BufferedImage)
+        {
+            return (BufferedImage) img;
+        }
+
+        // Create a buffered image with transparency
+        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+        // Draw the image on to the buffered image
+        Graphics2D bGr = bimage.createGraphics();
+        bGr.drawImage(img, 0, 0, null);
+        bGr.dispose();
+
+        // Return the buffered image
+        return bimage;
+    }
 
     public static void main(String[] args) throws IOException {
 
-        String jarFilename = "ROTP-" + governorVersion() + "-governor.jar";
+        String jarFilename = "rotp-" + governorVersion() + "-governor.jar";
         try {
             Class.forName("rotp.Rotp");
         } catch (ClassNotFoundException e) {
@@ -77,23 +100,24 @@ public class RotpGovernor {
             JOptionPane.showMessageDialog(null, message, "Remnants.jar not found", JOptionPane.ERROR_MESSAGE);
             System.exit(2);
         }
-//        if (!expectedROTPVersion.equals(Rotp.releaseId)) {
-//            System.out.println("Version mismatch. Governor " + governorVersion() +
-//                    " expects ROTP " + expectedROTPVersion +
-//                    " but actual is " + Rotp.releaseId);
-//            Object result = JOptionPane.showInputDialog(null,
-//                    "Governor and ROTP veresions don't match\n" +
-//                            "Please upgrade either Governor or ROTP\n" +
-//                            "Link to latest governor release below\n" +
-//                            "Continue with incorrect version?",
-//                    "Version mismatch", JOptionPane.WARNING_MESSAGE, null,
-//                    null,
-//                    "https://github.com/coder111111/rotp-public-governor/releases"
-//            );
-//            if (result == null) {
-//                System.exit(1);
-//            }
-//        }
+        // if (!expectedROTPVersion.equals(Rotp.releaseId)) {
+        //     System.out.println("Version mismatch. Governor " + governorVersion() +
+        //             " expects ROTP " + expectedROTPVersion +
+        //             " but actual is " + Rotp.releaseId);
+        //     Object result = JOptionPane.showInputDialog(null,
+        //             "Governor and ROTP veresions don't match\n" +
+        //                     "Please upgrade either Governor or ROTP\n" +
+        //                     "Link to latest governor release below\n" +
+        //                     "Continue with incorrect version?",
+        //             "Version mismatch", JOptionPane.WARNING_MESSAGE, null,
+        //             null,
+        //             "https://github.com/coder111111/rotp-public-governor/releases"
+        //     );
+        //     if (result == null) {
+        //         System.exit(1);
+        //     }
+        // }
+        // only do this if we are packaged as a class-only-jar and we're running with original Remnants.jar
         if (Rotp.jarFileName.startsWith("Remnants.jar")) {
             Rotp.jarFileName = jarFilename;
         }

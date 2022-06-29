@@ -1836,4 +1836,11 @@ public final class Colony implements Base, IMappedObject, Serializable {
             moveSlider(Colony.SHIP, null, text(ColonySpendingCategory.reserveText));
         }
     }
+    // BR:
+    /**
+	 * @return the Challenge Mod State
+	 */
+	public boolean isChallengeMode() {
+        return challengeMode;
+	} // \BR
 }
