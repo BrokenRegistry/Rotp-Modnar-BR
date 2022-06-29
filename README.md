@@ -23,3 +23,5 @@ Download build: https://rayfowler.itch.io/remnants-of-the-precursors
   - Copy of 1.02a_modnar_MOD39_newRaces
   - Added Profiles Manager
   - Added add-ons
+  - Debug multiple actions
+  
