@@ -50,7 +50,7 @@ public class Rotp {
     public static boolean countWords = false;
     private static String startupDir;
     private static JFrame frame;
-    public static String releaseId = "1.04-Modnar-BR 22.06.28";
+    public static String releaseId = "Rotp-Modnar-BR 22.06.29";
     public static long startMs = System.currentTimeMillis();
     public static long maxHeapMemory = Runtime.getRuntime().maxMemory() / 1048576;
     public static long maxUsedMemory;
