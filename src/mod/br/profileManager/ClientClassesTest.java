@@ -204,7 +204,7 @@ public class ClientClassesTest extends ClientClasses{
 	    @Override
 	    public void selectedAutoplayOption(String s)    { selectedAutoplayOption = s; }
 	    @Override
-	    public String selectedOpponentAIOption()       { return selectedOpponentAIOption == null ? OPPONENT_AI_CRUEL : selectedOpponentAIOption; } // modnar: default to modnar AI
+	    public String selectedOpponentAIOption()       { return selectedOpponentAIOption == null ? OPPONENT_AI_BASE : selectedOpponentAIOption; } // modnar: default to modnar AI
 	    @Override
 	    public void selectedOpponentAIOption(String s) { selectedOpponentAIOption = s; }
 	    @Override
@@ -386,8 +386,8 @@ public class ClientClassesTest extends ClientClasses{
 	            switch(selectedAutoplayOption()) {
 	                case AUTOPLAY_AI_BASE:   return AI.BASE;
 	                case AUTOPLAY_AI_XILMI:  return AI.XILMI;
-	                case AUTOPLAY_AI_CRUEL: return AI.CRUEL;
-	                case AUTOPLAY_AI_RANDOM:  return AI.RANDOM;
+//	                case AUTOPLAY_AI_CRUEL: return AI.CRUEL;
+//	                case AUTOPLAY_AI_RANDOM:  return AI.RANDOM;
 	                case AUTOPLAY_OFF:
 	                default:
 	                    return AI.XILMI;  // it does matter both for spending reallocation and for ship-captain
@@ -397,19 +397,19 @@ public class ClientClassesTest extends ClientClasses{
 	            switch(selectedOpponentAIOption()) {
 	                case OPPONENT_AI_BASE:   return AI.BASE;
 	                case OPPONENT_AI_XILMI:  return AI.XILMI;
-	                case OPPONENT_AI_CRUEL: return AI.CRUEL;
-	                case OPPONENT_AI_UNFAIR: return AI.UNFAIR;
-	                case OPPONENT_AI_RANDOM:  return AI.RANDOM;
-	                case OPPONENT_AI_ALLRANDOM:  return AI.ALLRANDOM;
+//	                case OPPONENT_AI_CRUEL: return AI.CRUEL;
+//	                case OPPONENT_AI_UNFAIR: return AI.UNFAIR;
+//	                case OPPONENT_AI_RANDOM:  return AI.RANDOM;
+//	                case OPPONENT_AI_ALLRANDOM:  return AI.ALLRANDOM;
 	                case OPPONENT_AI_SELECTABLE:
 	                    String specificAI = specificOpponentAIOption(e.id);
 	                    switch(specificAI) {
 	                        case OPPONENT_AI_BASE:   return AI.BASE;
 	                        case OPPONENT_AI_XILMI:  return AI.XILMI;
-	                        case OPPONENT_AI_CRUEL: return AI.CRUEL;
-	                        case OPPONENT_AI_UNFAIR: return AI.UNFAIR;
-	                        case OPPONENT_AI_RANDOM:  return AI.RANDOM;
-	                        case OPPONENT_AI_ALLRANDOM:  return AI.ALLRANDOM;
+//	                        case OPPONENT_AI_CRUEL: return AI.CRUEL;
+//	                        case OPPONENT_AI_UNFAIR: return AI.UNFAIR;
+//	                        case OPPONENT_AI_RANDOM:  return AI.RANDOM;
+//	                        case OPPONENT_AI_ALLRANDOM:  return AI.ALLRANDOM;
 	                    }
 	            }
 	        }
@@ -848,8 +848,8 @@ public class ClientClassesTest extends ClientClasses{
 	        list.add(AUTOPLAY_OFF);
 	        list.add(AUTOPLAY_AI_BASE);
 	        list.add(AUTOPLAY_AI_XILMI);
-	        list.add(AUTOPLAY_AI_CRUEL);
-	        list.add(AUTOPLAY_AI_RANDOM);
+//	        list.add(AUTOPLAY_AI_CRUEL);
+//	        list.add(AUTOPLAY_AI_RANDOM);
 	        return list;
 	    }
 	    @Override
@@ -857,10 +857,10 @@ public class ClientClassesTest extends ClientClasses{
 	        List<String> list = new ArrayList<>();
 	        list.add(OPPONENT_AI_BASE);
 	        list.add(OPPONENT_AI_XILMI);
-	        list.add(OPPONENT_AI_CRUEL);
-	        list.add(OPPONENT_AI_UNFAIR);
-	        list.add(OPPONENT_AI_RANDOM);
-	        list.add(OPPONENT_AI_ALLRANDOM);
+//	        list.add(OPPONENT_AI_CRUEL);
+//	        list.add(OPPONENT_AI_UNFAIR);
+//	        list.add(OPPONENT_AI_RANDOM);
+//	        list.add(OPPONENT_AI_ALLRANDOM);
 	        list.add(OPPONENT_AI_SELECTABLE);
 	        return list;
 	    }
@@ -869,10 +869,10 @@ public class ClientClassesTest extends ClientClasses{
 	        List<String> list = new ArrayList<>();
 	        list.add(OPPONENT_AI_BASE);
 	        list.add(OPPONENT_AI_XILMI);
-	        list.add(OPPONENT_AI_CRUEL);
-	        list.add(OPPONENT_AI_UNFAIR);
-	        list.add(OPPONENT_AI_RANDOM);
-	        list.add(OPPONENT_AI_ALLRANDOM);
+//	        list.add(OPPONENT_AI_CRUEL);
+//	        list.add(OPPONENT_AI_UNFAIR);
+//	        list.add(OPPONENT_AI_RANDOM);
+//	        list.add(OPPONENT_AI_ALLRANDOM);
 	        return list;
 	    }
 	    @Override
@@ -902,9 +902,9 @@ public class ClientClassesTest extends ClientClasses{
 	        selectedPlayerRace(random(startingRaceOptions()));
 	        selectedPlayerRace("RACE_HUMAN");
 	        selectedGameDifficulty = DIFFICULTY_NORMAL;
-	        selectedOpponentAIOption = OPPONENT_AI_CRUEL;
+	        selectedOpponentAIOption = OPPONENT_AI_BASE;
 	        for (int i=0;i<specificOpponentAIOption.length;i++)
-	            specificOpponentAIOption[i] = OPPONENT_AI_CRUEL;
+	            specificOpponentAIOption[i] = OPPONENT_AI_BASE;
 	        setToDefault();
 	        generateGalaxy();
 	    }

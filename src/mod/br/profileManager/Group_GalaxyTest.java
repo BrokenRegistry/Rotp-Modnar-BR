@@ -66,8 +66,8 @@ class Group_GalaxyTest {
 	private String opponentAIPrt = 
 			"\r\n"
 			+ "¦==== Parameter : OPPONENT AI\r\n"
-			+ "; Options       : [Base, Xilmi, Cruel, Unfair, Random, Allrandom, Select]\r\n"
-			+ "¦ History       : Current: Cruel ¦ Last:  ¦ Initial: Cruel ¦ Default: Base\r\n"
+			+ "; Options       : [Base, Xilmi, Select]\r\n"
+			+ "¦ History       : Current: Base ¦ Last:  ¦ Initial: Base ¦ Default: Base\r\n"
 			+ "¦ History       : Game: \r\n"
 			+ "¦ LOCAL ENABLE  : All         ; [No, All, Save, Load, ·]\r\n"
 			+ "\r\n"
