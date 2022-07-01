@@ -3,30 +3,39 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <artifactId>rotp</artifactId>
-    <modelVersion>4.0.0</modelVersion>
+    <!-- Project Declaration -->
     <groupId>com.rayfowler</groupId>
-
-    <version>2022.06.29</version>
-
+    <artifactId>rotp</artifactId>
+    <version>2022.07.01</version>
+    <packaging>jar</packaging>
+	
+    <!-- Variables Declaration -->
     <properties>
+    	<!-- Personal -->
+    	<RepoId>Rotp-Modnar-BR</RepoId>
+    	<AuthorId>BrokenRegistry</AuthorId>
+    	<BaseFileName>rotp-${project.version}</BaseFileName>
+     	<!-- Maven Standard -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>8</java.version>
+        <junit.jupiter.version>5.8.2</junit.jupiter.version>
+        <junit.platform.version>1.8.2</junit.platform.version>
         <GITHUB_TOKEN></GITHUB_TOKEN>
     </properties>
 
+    <!-- GitHub Declaration -->
     <scm>
         <connection>scm:git:${project.scm.url}</connection>
         <developerConnection>scm:git:${project.scm.url}</developerConnection>
-    <url>https://github.com/BrokenRegistry/Rotp-Modnar-BR.git</url>
+        <url>https://github.com/${AuthorId}/${RepoId}.git</url>
         <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
         <repository>
             <id>github</id>
-            <name>BrokenRegistry</name>
-            <url>https://maven.pkg.github.com/BrokenRegistry/Rotp-Modnar-BR</url>
+            <name>${AuthorId}</name>
+            <url>https://maven.pkg.github.com/${AuthorId}/${RepoId}</url>
         </repository>
     </distributionManagement>
 
@@ -43,7 +52,20 @@
         </pluginRepository>
     </pluginRepositories>
 
+    <!-- All the dependencies Declaration -->
     <dependencies>
+    	<!-- JUNIT dependencies -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.jupiter.version}</version>
+        </dependency>
+        <!-- Base and modders ROTP dependencies -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
@@ -64,7 +86,12 @@
             <artifactId>webp-imageio</artifactId>
             <version>0.1.6</version>
         </dependency>
+        <!-- Needed to play video -->
+        <!-- Remove ffmpeg dependency, too big jar size -->
+        <!-- JavaFX doesn't do WebM, don't use JavaFX -->
+        <!-- Try LibGDX next -->
 
+        <!-- My attempt to convert save game files to JSON, incomplete -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -78,14 +105,11 @@
             <version>21.1.0</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.akathist.maven.plugins.launch4j</groupId>
-            <artifactId>launch4j-maven-plugin</artifactId>
-            <version>2.1.2</version>
-            <type>maven-plugin</type>
-        </dependency>
     </dependencies>
+
+	<!-- Files generation -->
     <build>
+    	<!-- Ressources non-conventionnal location Declaration-->
         <sourceDirectory>src</sourceDirectory>
         <resources>
             <resource>
@@ -110,14 +134,14 @@
                 <directory>${project.basedir}</directory>
                 <includes>
                     <include>README.md</include>
-                </includes>
+                 </includes>
                 <filtering>true</filtering>
             </resource>
         </resources>
 
+        <!-- Building tools -->
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
@@ -125,7 +149,9 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
-
+            
+ 
+            <!-- Coder plugin for images compression -->
             <plugin>
                 <groupId>org.maven.coder</groupId>
                 <artifactId>native-transform-maven-plugin</artifactId>
@@ -175,9 +201,11 @@
                 </executions>
             </plugin>
 
+            <!-- plugin for Mini Jar -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
+                <version>3.3.0</version>
                 <executions>
                     <!-- Run shade goal on package phase -->
                     <!-- package minified jar. This needs to run first as it's attached, doesn't replace main jar -->
@@ -198,14 +226,14 @@
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>rotp.Rotp</mainClass>
                                     <manifestEntries>
-                                        <Built-By>BrokenRegistry</Built-By>
+                                        <Built-By>${AuthorId}</Built-By>
                                         <Mini>true</Mini>
                                     </manifestEntries>
                                 </transformer>
                             </transformers>
                             <filters>
                                 <filter>
-                                    <artifact>*:*</artifact>
+                                    <artifact>com.rayfowler:rotp</artifact>
                                     <excludes>
                                         <exclude>**/*.wav</exclude>
                                         <exclude>**/*.jpg</exclude>
@@ -230,13 +258,13 @@
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>rotp.RotpGovernor</mainClass>
                                     <manifestEntries>
-                                        <Built-By>BrokenRegistry</Built-By>
+                                        <Built-By>${AuthorId}</Built-By>
                                     </manifestEntries>
                                 </transformer>
                             </transformers>
                             <filters>
                                 <filter>
-                                    <artifact>*:*</artifact>
+                                    <artifact>com.rayfowler:rotp</artifact>
                                     <excludes>
                                         <exclude>**/*.ogg</exclude>
                                         <exclude>**/*.webp</exclude>
@@ -248,6 +276,7 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Some Download helper -->
             <plugin>
                 <groupId>com.googlecode.maven-download-plugin</groupId>
                 <artifactId>download-maven-plugin</artifactId>
@@ -269,9 +298,11 @@
                     <sha256>7b0c07a068506b8539408cfe60e3120f54610af463a2dbd3b2ca42b572dd567e</sha256>
                 </configuration>
             </plugin>
+            <!-- Windows executable creation -->
             <plugin>
                 <groupId>com.akathist.maven.plugins.launch4j</groupId>
                 <artifactId>launch4j-maven-plugin</artifactId>
+                <version>2.1.2</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -287,8 +318,9 @@
                                 <timeoutErr>false</timeoutErr>
                             </splash>
                             <headerType>gui</headerType>
-                            <outfile>target/rotp-${project.version}.exe</outfile>
-                            <jar>target/rotp-${project.version}-mini.jar</jar>
+                            <outfile>target/${BaseFileName}.exe</outfile>
+                            <!-- <jar>target/rotp-${project.version}-mini.jar</jar> -->
+                            <jar>target/${BaseFileName}-mini.jar</jar>
                             <errTitle>ROTP</errTitle>
                             <classPath>
                                 <mainClass>rotp.RotpGovernor</mainClass>
@@ -314,7 +346,7 @@
                                 <txtProductVersion>${project.version}</txtProductVersion>
                                 <productName>Remnants of the Precursors</productName>
                                 <internalName>rotp</internalName>
-                                <originalFilename>rotp-${project.version}.exe</originalFilename>
+                                <originalFilename>${BaseFileName}.exe</originalFilename>
                             </versionInfo>
                         </configuration>
                     </execution>
@@ -347,24 +379,23 @@
                     <execution>
                         <id>default-cli</id>
                         <configuration>
-                            <owner>BrokenRegistry</owner>
-                            <repository>Rotp-Modnar-BR</repository>
+                            <owner>${AuthorId}</owner>
+                            <repository>${RepoId}</repository>
                             <authToken>${GITHUB_TOKEN}</authToken>
                             <tagName>${project.version}</tagName>
-                            <name>ROTP-Modnar-BR ${project.version}</name>
+                            <name>${BaseFileName}</name>
                             <targetCommitish>main</targetCommitish>
                             <releaseNotes>target/classes/README.md</releaseNotes>
                             <assets>
-                                <asset>target/rotp-${project.version}.jar</asset>
-                                <asset>target/rotp-${project.version}-mini.jar</asset>
-                                <asset>target/rotp-${project.version}-windows.zip</asset>
+                                <asset>target/${BaseFileName}.jar</asset>
+                                <asset>target/${BaseFileName}-mini.jar</asset>
+                                <asset>target/${BaseFileName}-windows.zip</asset>
                                 <!-- <asset>Profiles.pdf</asset> -->
                             </assets>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
 </project>
