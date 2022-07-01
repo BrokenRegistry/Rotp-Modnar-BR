@@ -11,5 +11,4 @@ launch4j/Remnants/
 bin/
 *.iml
 *.log
-*Test.java
 *.bak

@@ -47,8 +47,7 @@ import rotp.model.tech.TechEngineWarp;
 import rotp.ui.game.SetupGalaxyUI;
 import rotp.ui.UserPreferences;
 import rotp.util.Base;
-import rotp.mod.br.AddOns.GalaxyOptions;
-import rotp.mod.br.AddOns.RacesOptions;
+import rotp.mod.br.AddOns.GalaxyOptions; // BR:
 import rotp.mod.br.profiles.Profiles; // BR:
 
 public class MOO1GameOptions implements Base, IGameOptions, Serializable {
@@ -252,14 +251,28 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     }
     @Override
     public int maximumOpponentsOptions() {
-        // modnar: change maxEmpires to be ~12 stars/empire, original ~8 stars/empire
-        int maxEmpires = min(numberStarSystems()/12, colors.size(), MAX_OPPONENT_TYPE*startingRaceOptions().size());
+        // xilmi: change maxEmpires to be ~3 stars/empire, original ~8 stars/empire
+    	// BR: customize min Star per empire
+    	int minStarsPerEmpire = 3;
+    	if (Profiles.isMinStarsPerEmpireEnabled()) {
+    		minStarsPerEmpire = GalaxyOptions.getMinStarsPerEmpire();
+    	}
+        int maxEmpires = min(numberStarSystems()/minStarsPerEmpire
+        		, colors.size(), MAX_OPPONENT_TYPE*startingRaceOptions().size());
+        // \BR:
         int maxOpponents = min(SetupGalaxyUI.MAX_DISPLAY_OPPS);
         return min(maxOpponents, maxEmpires-1);
     }
     @Override
     public int defaultOpponentsOptions() {
-        int maxEmpires = min((int)Math.ceil(numberStarSystems()/16f), colors.size(), MAX_OPPONENT_TYPE*startingRaceOptions().size());
+    	// BR: customize preferred Star per empire
+    	float prefStarsPerEmpire = 10f;
+    	if (Profiles.isPreferredStarsPerEmpireEnabled()) {
+    		prefStarsPerEmpire = GalaxyOptions.getPreferredStarsPerEmpire();
+    	}
+        int maxEmpires = min((int)Math.ceil(numberStarSystems()/prefStarsPerEmpire)
+        		, colors.size(), MAX_OPPONENT_TYPE*startingRaceOptions().size());
+        // \BR:
         int maxOpponents = min(SetupGalaxyUI.MAX_DISPLAY_OPPS);
         return min(maxOpponents, maxEmpires-1);
     }
