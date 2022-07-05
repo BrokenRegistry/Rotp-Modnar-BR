@@ -575,6 +575,10 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
             case GALAXY_AGE_OLD:    pcts = oldPcts; break;
             default:                pcts = normalPcts; break;
         }
+        // BR: distribution modifier
+        if (Profiles.isStarProbabilityEnabled()) {
+        	pcts = GalaxyOptions.modifyStarProbability(pcts);
+        } // \BR:
         float r = random();
         for (int i=0;i<pcts.length;i++) {
             if (r <= pcts[i]) {

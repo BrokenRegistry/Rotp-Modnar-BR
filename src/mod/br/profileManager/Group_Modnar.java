@@ -42,10 +42,15 @@ import rotp.ui.game.StartModOptionsUI;
 class Group_Modnar extends  AbstractGroup <ClientClasses> {
 
 	Group_Modnar(ClientClasses go) {
-	   super(go);
+		super(go, getHeadComments());
 	}
-	@Override
-	protected void initSettingList(ClientClasses go) {
+	private static String getHeadComments() {
+		return  " " + NL
+				+ "------------- Modnar's Options -------------" + NL
+				+ "";
+	}
+
+	@Override protected void initSettingList(ClientClasses go) {
 		addParameter(new AlwaysStarGates(go));
 		addParameter(new AlwaysThorium(go));
 		addParameter(new ChallengeMode(go));
@@ -55,8 +60,6 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		addParameter(new CustomDifficulty(go));
 		addParameter(new DynamicDifficulty(go));
 		addParameter(new MissileSizeModifier(go));
-//		addParameter(new RetreatRestrictions(go));
-//		addParameter(new RetreatRestrictionTurns(go));
 	}
 
 	// ==============================================================
@@ -104,10 +107,6 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void initComments() {
-			setHeadComments(
-				" " + NL +
-				"------------- Modnar's Options -------------" + NL +
-				" ");
 			setBottomComments(availableForChange());
 		}
 	}
@@ -396,76 +395,4 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 			setBottomComments(dynamicParameter());
 		}
 	}
-//	// ==============================================================
-//	// RETREAT RESTRICTIONS
-//	//
-//	static class RetreatRestrictions extends
-//			AbstractParameter <Integer, Valid_IntegerWithList, ClientClasses> {
-//
-//		RetreatRestrictions(ClientClasses go) { 
-//			super("RETREAT RESTRICTIONS", 
-//					new Valid_IntegerWithList(
-//							UserPreferences.retreatRestrictions()
-//							, StartModOptionsUI.getRetreatRestrictionOptions()));	
-//			setHistoryCodeView(Initial, UserPreferences.retreatRestrictions());
-//			setHistoryCodeView(Default, 0);
-//			setHistory(Current, Initial);
-//		}
-//
-//		@Override public AbstractT<Integer> getFromGame (ClientClasses go) { // BR: Validate Dynamic 
-//			return new T_Integer(UserPreferences.retreatRestrictions()); // Dynamic: Same as UserPreferences
-//		}
-//
-//		@Override public void putToGame(ClientClasses go, AbstractT<Integer> value) {
-//			UserPreferences.setMissileSizeModifier(value.getCodeView()); // Dynamic: Same as UserPreferences
-//		}		
-//
-//		@Override public AbstractT<Integer> getFromUI (ClientClasses go) {
-//			return new T_Integer(UserPreferences.retreatRestrictions());
-//		}
-//
-//		@Override public void putToGUI(ClientClasses go, AbstractT<Integer> value) {
-//			UserPreferences.setMissileSizeModifier(value.getCodeView());
-//		}
-//
-//		@Override public void initComments() {
-//			setBottomComments(dynamicParameter());
-//		}
-//	}
-//	// ==============================================================
-//	// RETREAT RESTRICTION TURNS
-//	//
-//	static class RetreatRestrictionTurns extends
-//			AbstractParameter <Integer, Validation<Integer>, ClientClasses> {
-//
-//		RetreatRestrictionTurns(ClientClasses go) { 
-//			super("RETREAT RESTRICTION TURNS", 
-//					new Validation<Integer>(
-//							new T_Integer(UserPreferences.retreatRestrictionTurns())));
-//			
-//			setHistoryCodeView(Default, 100); // XILMI DEFAULT
-//			setLimits(0 , 100);
-//			setDefaultRandomLimits(0 , 100);
-//		}
-//
-//		@Override public AbstractT<Integer> getFromGame (ClientClasses go) {
-//			return new T_Integer(UserPreferences.retreatRestrictionTurns()); // Dynamic: Same as UserPreferences
-//		}
-//
-//		@Override public void putToGame(ClientClasses go, AbstractT<Integer> value) {
-//			UserPreferences.setMissileSizeModifier(value.getCodeView()); // Dynamic: Same as UserPreferences
-//		}		
-//
-//		@Override public AbstractT<Integer> getFromUI (ClientClasses go) {
-//			return new T_Integer(UserPreferences.retreatRestrictionTurns());
-//		}
-//
-//		@Override public void putToGUI(ClientClasses go, AbstractT<Integer> value) {
-//			UserPreferences.setMissileSizeModifier(value.getCodeView());
-//		}
-//
-//		@Override public void initComments() {
-//			setBottomComments(dynamicParameter());
-//		}
-//	}
 }
