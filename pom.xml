@@ -7,14 +7,14 @@
 	<!-- Project Declaration -->
 	<groupId>com.rayfowler</groupId>
 	<artifactId>rotp</artifactId>
-	<version>2022.07.13</version>
+	<version>${revision}</version>
 	<packaging>jar</packaging>
 	
 	<!-- Variables Declaration -->
 	<properties>
 		<!-- Personal -->
 		<maven.build.timestamp.format>yyyy.MM.dd</maven.build.timestamp.format>
-		<buildDate>${maven.build.timestamp}</buildDate>
+		<revision>${maven.build.timestamp}</revision>
 		<RepoId>Rotp-Modnar-BR</RepoId>
 		<AuthorId>BrokenRegistry</AuthorId>
 		<BaseFileName>rotp-${project.version}</BaseFileName>
