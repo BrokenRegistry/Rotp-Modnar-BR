@@ -25,8 +25,6 @@
 		<junit.platform.version>1.8.2</junit.platform.version>
 		<GITHUB_TOKEN></GITHUB_TOKEN>
 	</properties>
-	
-	<version>${buildDate}</version>
 
 	<!-- GitHub Declaration -->
 	<scm>
