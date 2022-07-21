@@ -2,6 +2,7 @@ package rotp.model.game;
 
 import java.io.Serializable;
 
+import rotp.ui.UserPreferences;
 /**
  * Governor options.
  */
@@ -14,13 +15,14 @@ public class GovernorOptions implements Serializable {
         All
     }
     // keep backwards compatibility with system properties
-    private boolean governorOnByDefault = !"false".equalsIgnoreCase(System.getProperty("defaultgovernor", "true"));;
+    private boolean governorOnByDefault = UserPreferences.governorOnByDefault();
     private boolean autotransport = "true".equalsIgnoreCase(System.getProperty("autotransport", "false"));
     private GatesGovernor gates = "false".equalsIgnoreCase(System.getProperty("autogate", "true")) ? GatesGovernor.None : GatesGovernor.Rich;
 
     // Moved from GovernorOptions2
     private int transportPopulation = 10;
     private int transportMaxPercent = 10;
+
     // 1.5x for destinations inside nebulae
     private int transportMaxTurns = 5;
     private boolean transportRichDisabled = true;
@@ -28,11 +30,11 @@ public class GovernorOptions implements Serializable {
 
     private int minimumMissileBases = 0;
     private boolean autospend = true;
+    private boolean autoApply = UserPreferences.governorAutoApply();
     private int reserve = 1000;
     private boolean shipbuilding = true;
 
     // if true, new colonies will have auto ship building set to "on"
-    // TODO: for future use
     private boolean autoShipsByDefault = true;
     // if true, automatically scout new planets
     private boolean autoScout = true;
@@ -62,6 +64,7 @@ public class GovernorOptions implements Serializable {
 
     public void setGovernorOnByDefault(boolean governorOnByDefault) {
         this.governorOnByDefault = governorOnByDefault;
+        UserPreferences.setGovernorOn(governorOnByDefault);
     }
 
     public void setAutotransport(boolean autotransport) {
@@ -104,12 +107,21 @@ public class GovernorOptions implements Serializable {
         this.minimumMissileBases = minimumMissileBases;
     }
 
-    public boolean isAutospend() {
+   public boolean isAutospend() {
         return autospend;
     }
 
+    public boolean isAutoApply() {
+        return autoApply;
+    }
+
+    public void setAutoApply(boolean autoApply) {
+        this.autoApply = autoApply;
+        UserPreferences.setGovernorAutoApply(autoApply);
+    }
     public void setAutospend(boolean autospend) {
         this.autospend = autospend;
+        UserPreferences.setAutoSpendOn(autospend);
     }
 
     public int getReserve() {

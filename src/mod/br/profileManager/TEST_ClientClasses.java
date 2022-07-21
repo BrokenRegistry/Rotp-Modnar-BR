@@ -40,7 +40,7 @@ import rotp.util.Base;
  * Classes that have to be passed thru Profile manager
  * Could be replaced by using {@code Object} and casting the class
  */
-public class ClientClassesTest extends ClientClasses{
+public class TEST_ClientClasses extends ClientClasses{
 	private IGameOptions options = new Gui();
 	private IGameOptions option2 = options;
 	private GameSession  session;
@@ -1158,5 +1158,10 @@ public class ClientClassesTest extends ClientClasses{
 	        }
 
 	    }
+		@Override
+		public int numberStarSystems(String size) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
 	}
 }

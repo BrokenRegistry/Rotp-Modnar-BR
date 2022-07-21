@@ -184,7 +184,8 @@ public class Galaxy implements Base, Serializable {
     public void giveAdvice(String key) {
         if (!adviceAlreadyGiven(key)) {
             addAdviceGiven(key);
-            AdviceNotification.create(key);
+            if(!UserPreferences.disableAdvisor())
+                AdviceNotification.create(key);
         }
     }
     public void giveAdvice(String key, Empire e1, String s1) {

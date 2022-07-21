@@ -21,7 +21,7 @@ import java.util.List;
 
 import mod.br.AddOns.RaceFilter;
 import mod.br.profileManager.ClientClasses;
-//import mod.br.profileManager.Group_Galaxy.StartPresetAI;
+import mod.br.profileManager.Group_Galaxy.StartPresetAI;
 import mod.br.profileManager.Group_Galaxy.StartPresetOpponent;
 import rotp.mod.br.profiles.Profiles;
 import rotp.model.game.IGameOptions;
@@ -66,14 +66,14 @@ public class RacesOptions {
 				Profiles.userProfiles().getParameter("START PRESET OPPONENT");
 		startPresetOpponent.loadOpponents(new ClientClasses(options));
 	}
-//	/**
-//	 * Set the starting opponents AI
-//	 * @param options the {@code IGameOptions} containing the parameters
-//	 */
-//	public static void loadStartingAIs(IGameOptions options) {
-//		StartPresetAI startPresetAI;
-//		startPresetAI = (StartPresetAI) 
-//				Profiles.userProfiles().getParameter("START PRESET AI");
-//		startPresetAI.loadAIs(new ClientClasses(options));
-//	}
+	/**
+	 * Set the starting opponents AI
+	 * @param options the {@code IGameOptions} containing the parameters
+	 */
+	public static void loadStartingAIs(IGameOptions options) {
+		StartPresetAI startPresetAI;
+		startPresetAI = (StartPresetAI) 
+				Profiles.userProfiles().getParameter("START PRESET AI");
+		startPresetAI.loadAIs(new ClientClasses(options));
+	}
 }

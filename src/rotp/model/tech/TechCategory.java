@@ -247,6 +247,15 @@ public final class TechCategory implements Base, Serializable {
 				addPossibleTech(ThoriumCellId);
                 found = true;
 			}
+            // BR: always add in Control Irradiated Tech
+			// if the ALWAYS_IRRIDIATED option in UserPreferences (Remnants.cfg) is set to YES
+			// for tech category Planetary, index = 3
+			// tech level 18, quintile i = 6
+			if ((index == 3) && (i == 6) && UserPreferences.alwaysIrradiated()) {
+				String IrradiatedId = "ControlEnvironment:6";
+				addPossibleTech(IrradiatedId);
+                found = true;
+			}
 			
             if (!found)
                 addPossibleTech(random(techs));
@@ -257,6 +266,7 @@ public final class TechCategory implements Base, Serializable {
         for (int i=0; i<baseCat.possibleTechs.size(); i++) {
             String id = baseCat.possibleTechs.get(i);
             Tech t = tech(id);
+            t.init();
             if (t.free && !tree.spy())
                 learnTech(id);
         }

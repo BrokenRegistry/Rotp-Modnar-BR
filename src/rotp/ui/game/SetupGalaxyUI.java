@@ -485,11 +485,6 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
         newGameOptions().selectedOpponentAIOption(newGameOptions().prevOpponentAI());
         repaint();
     }
-    public void nextResearchRate(boolean click) {
-        if (click) softClick();
-        newGameOptions().selectedResearchRate(newGameOptions().nextResearchRate());
-        repaint();
-    }
     public void increaseOpponents(boolean click) {
         int numOpps = newGameOptions().selectedNumberOpponents();
         if (numOpps >= newGameOptions().maximumOpponentsOptions())
@@ -544,7 +539,9 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
     }
     public void goToRaceSetup() {
         buttonClick();
-        RotPUI.instance().selectSetupRacePanel();
+//        RotPUI.instance().selectSetupRacePanel();
+        // BR: To avoid reset options while returning to Race panel
+        RotPUI.instance().returnToSetupRacePanel();
         release();
     }
     // BR: Add option to return to the main menu
@@ -559,9 +556,9 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
         if (Profiles.isStartOpponentRaceListEnabled()) {
         	RacesOptions.loadStartingOpponents(newGameOptions());
         }
-//        if (Profiles.isStartOpponentAIListEnabled()) {
-//        	RacesOptions.loadStartingAIs(newGameOptions());
-//        } // \BR:
+        if (Profiles.isStartOpponentAIListEnabled()) {
+        	RacesOptions.loadStartingAIs(newGameOptions());
+        } // \BR:
         Race r = Race.keyed(newGameOptions().selectedPlayerRace());
         GameUI.gameName = r.setupName() + " - "
         		+ text(newGameOptions().selectedGalaxySize())

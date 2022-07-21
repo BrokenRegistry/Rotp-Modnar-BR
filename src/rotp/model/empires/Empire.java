@@ -57,6 +57,7 @@ import rotp.model.game.GovernorOptions;
 import rotp.model.ships.ShipSpecialColony;
 import rotp.ui.notifications.*;
 import rotp.model.galaxy.Galaxy;
+import rotp.model.galaxy.GalaxyFactory;
 import rotp.model.galaxy.IMappedObject;
 import rotp.model.galaxy.Location;
 import rotp.model.galaxy.NamedObject;
@@ -3815,9 +3816,8 @@ public final class Empire implements Base, NamedObject, Serializable {
 		sv.name(homeSysId, newName);
         int numCompWorlds = getCompanionWorldsNumber();
         if (numCompWorlds > 0) { 
-            String[] compSysName = new String[]{"α", "β", "γ", "δ"}; // companion world Greek letter prefix
             for (int id = 0; id < numCompWorlds; id++) {
-               	String name = compSysName[id] + " " + newName;
+               	String name = GalaxyFactory.compSysName[id] + " " + newName;
                	sv.name(compSysId[id], name);
              }
         }
@@ -3832,7 +3832,6 @@ public final class Empire implements Base, NamedObject, Serializable {
         dataRaceKey = newRace;
 		race        = Race.keyed(newRace);
         dataRace    = Race.keyed(newRace);
-        // sv = new SystemInfo(this);
         String raceName   = race.nextAvailableName();
         raceNameIndex     = race.nameIndex(raceName);
         String leaderName = race.nextAvailableLeader();
@@ -3884,7 +3883,6 @@ public final class Empire implements Base, NamedObject, Serializable {
         shipImageHuge = null;
         scoutImage = null;
         transportImage = null;
-        loadStartingShipDesigns();
         recalcPlanetaryProduction();
         setHomeWorldName(race.nextAvailableHomeworld());
 	} // \BR

@@ -39,6 +39,7 @@ import java.util.List;
 import br.profileManager.src.main.java.AbstractGroup;
 import br.profileManager.src.main.java.AbstractParameter;
 import br.profileManager.src.main.java.AbstractT;
+import br.profileManager.src.main.java.Options;
 import br.profileManager.src.main.java.T_Integer;
 import br.profileManager.src.main.java.T_String;
 import br.profileManager.src.main.java.Validation;
@@ -127,8 +128,8 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 //				, SHAPE_SWIRLCLUSTERS, 2, GalaxySwirlClustersShape.options2));
 		addParameter(new ShapeOption(go, "SHAPE SPIRALARMS OPTION 1"
 				, SHAPE_SPIRALARMS, 1, GalaxySpiralArmsShape.options1));
-//		addParameter(new ShapeOption(go, "SHAPE SPIRALARMS OPTION 2"
-//				, SHAPE_SPIRALARMS, 2, GalaxySpiralArmsShape.options2));
+		addParameter(new ShapeOption(go, "SHAPE SPIRALARMS OPTION 2"
+				, SHAPE_SPIRALARMS, 2, GalaxySpiralArmsShape.options2));
 		addParameter(new Difficulty(go));
 		addParameter(new OpponentAI(go));
 		addParameter(new NbOpponent(go));	
@@ -136,6 +137,10 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 		addParameter(new GameRaceFilter(go));
 		addParameter(new GuiPresetOpponent(go));
 		addParameter(new StartPresetOpponent(go));
+		addParameter(new GuiAIFilter(go));  
+		addParameter(new GameAIFilter(go)); 
+		addParameter(new GuiPresetAI(go));  
+		addParameter(new StartPresetAI(go)); 
 	}
 
 	// ========== Common Methods ==========
@@ -290,7 +295,14 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 							new T_String(go.newOptions().selectedGalaxySize()),
 							go.newOptions().galaxySizeOptions()));			
 
-		setHistory(Default, "Small"); // Ray Choice
+			setHistory(Default, "Small"); // Ray Choice
+			
+			// Get the size to build the description, for comments purpose
+			List<String> sizeList = new ArrayList<String>();
+			for (String size: go.newOptions().galaxySizeOptions()) {
+				sizeList.add("" + go.newOptions().numberStarSystems(size));
+			}
+			getValidation().setDescriptions(sizeList);
 		}
 		
 		// ========== Overriders ==========
@@ -299,9 +311,7 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 			return new T_String(go.newOptions().selectedGalaxySize());
 		}
 		
-		@Override public void putToGame(ClientClasses go, AbstractT<String> value) {
-
-		}
+		@Override public void putToGame(ClientClasses go, AbstractT<String> value) {}
 		
 		@Override public AbstractT<String> getFromUI (ClientClasses go) {
 			return new T_String(go.newOptions().selectedGalaxySize());
@@ -312,7 +322,13 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 			go.options().selectedGalaxySize(value.getCodeView());
 		}
 		
-		@Override public void initComments() {}
+		@Override public void initComments() {
+			List<String> list = new ArrayList<String>();
+			for (Options<String> option: getValidation().optionList()) {
+				list.add(option.getUserView() + "=" + option.getDescription());
+			}
+			// setOptionsComments("Number of Star : " + list.toString());
+		}
 	}
 	 
 	// ==============================================================
@@ -708,5 +724,250 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 			}
 		}
 	}
+	// ==============================================================
+	// GUI AI FILTER
+	//
+	static class GuiAIFilter extends
+			AbstractParameter <String, Validation<String>, ClientClasses> {
 
+		// ==================================================
+		// Constructors and initializers
+		//
+		GuiAIFilter(ClientClasses go) { 
+			super("GUI AI FILTER",
+					new Validation<String>(
+							new T_String(getInitialAI(go))
+							, go.newOptions().specificOpponentAIOptions()));
+			
+			List<String> defaultValue = go.newOptions().specificOpponentAIOptions();
+			setHistoryCodeView(Initial, defaultValue); // set Current too
+			setHistoryCodeView(Default, defaultValue);
+			RaceFilter.defaultGuiAIList(defaultValue);
+		}
+		
+		// ========== Overriders ==========
+		//
+		@Override public AbstractT<String> getFromGame (ClientClasses go) {
+			return new T_String(); // Not really possible
+		}
+		
+		@Override public void putToGame(ClientClasses go, AbstractT<String> value) {}
+		
+		@Override public AbstractT<String> getFromUI (ClientClasses go) {
+			return new T_String().setFromUserView(RaceFilter.selectedGuiAIFilter());
+		}
+		
+		@Override public void putToGUI(ClientClasses go, AbstractT<String> value) {
+			RaceFilter.selectedGuiAIFilter(value.getUserList());
+		}
+		
+		@Override public void initComments() {
+			setSettingComments(" " + NL
+					+ "If you don’t like to have some AI as opponent,"
+					+ " or if your planetary distribution affect an AI too much,"
+					+ " you are able to remove them form the pool of selectable AI." + NL
+					+ "Only the AI on the list will toggle when you click on the selection rectangle." + NL
+					+ "The AI list must be written using \"/\" as separator." + NL
+					+ "!!! Don’t break the lines !!! even if they become very long..."
+					+ " There is no multi-line analysis."
+					+ NL);
+		}
+	}
+
+	// ==============================================================
+	// GAME AI FILTER
+	//
+	static class GameAIFilter extends
+			AbstractParameter <String, Validation<String>, ClientClasses> {
+
+	    // ==================================================
+	    // Constructors and initializers
+	    //
+		GameAIFilter(ClientClasses go) { 
+			super("GAME AI FILTER",
+					new Validation<String>(
+							new T_String(getInitialAI(go))
+							, go.newOptions().specificOpponentAIOptions()));
+			
+			List<String> defaultValue = go.newOptions().specificOpponentAIOptions();
+//			.specificOpponentAIOptions().subList(0, AI.AI_LAST_ID);
+			setHistoryCodeView(Initial, defaultValue); // set Current too
+			setHistoryCodeView(Default, defaultValue);
+			RaceFilter.defaultGameAIList(defaultValue);
+		}
+		
+	    // ========== Overriders ==========
+	    //
+		@Override public AbstractT<String> getFromGame (ClientClasses go) {
+			return new T_String(); // Not really possible
+		}
+		
+		@Override public void putToGame(ClientClasses go, AbstractT<String> value) {}
+		
+		@Override public AbstractT<String> getFromUI (ClientClasses go) {
+			return new T_String().setFromUserView(RaceFilter.selectedGameAIFilter());
+		}
+		
+		@Override public void putToGUI(ClientClasses go, AbstractT<String> value) {
+			RaceFilter.selectedGameAIFilter(value.getUserList());
+		}
+		
+		@Override public void initComments() {
+			setSettingComments(" " + NL
+					+ "If you don’t like to have some AI as opponent,"
+					+ " or if your planetary distribution affect an AI too much,"
+					+ " you are able to remove them form the pool of selectable AI." + NL
+					+ "Only the AI on the list will be used by the random generator when starting a new game." + NL
+					+ "The AI list must be written using \"/\" as separator." + NL
+					+ "!!! Don’t break the lines !!! even if they become very long..."
+					+ " There is no multi-line analysis."
+					+ NL);
+		}
+	}
+	// ==============================================================
+	// GUI PRESET AI
+	//
+	// GuiAIFilter is required
+	// 
+	static class GuiPresetAI extends
+			AbstractParameter <String, Valid_AIList, ClientClasses> {
+
+		// ==================================================
+		// Constructors and initializers
+		//
+		GuiPresetAI(ClientClasses go) { 
+			super("GUI PRESET AI",
+					new Valid_AIList(
+							new T_String(getInitialAI(go))
+							, getAIOptionList(go)
+					)
+			);
+			
+			List<String> defaultValue = go.newOptions().specificOpponentAIOptions();
+			setHistoryCodeView(Initial, defaultValue); // set Current too
+			setHistoryCodeView(Default, defaultValue);
+		}
+		
+		// ========== Overriders ==========
+		//
+		@Override public AbstractT<String> getFromGame (ClientClasses go) {
+			List<String> list = new ArrayList<String>();
+			for (Empire empire : go.session().galaxy().empires()) {
+				list.add(empire.raceName());
+			}
+			list.remove(0); // remove player
+			return new T_String().setFromCodeView(list);
+		}
+		
+		@Override public void putToGame(ClientClasses go, AbstractT<String> value) {}
+		
+		@Override public AbstractT<String> getFromUI (ClientClasses go) {
+			return new T_String().setFromCodeView(getAIFromGUI(go.newOptions()));
+		}
+		
+		@Override public void putToGUI(ClientClasses go, AbstractT<String> value) {
+			String[] selectedAIs = ((Valid_AIList) getValidation())
+										.analyze(go, value.getUserList(), false);
+			int i=0;
+			for (String ai : selectedAIs) {
+				go.newOptions().specificOpponentAIOption(ai, i);
+				go.options().specificOpponentAIOption(ai, i);
+				i++;
+			}
+		}
+		
+		@Override public void initComments() {
+			setSettingComments(" " + NL
+					+ "To fill the AI opponent list or suggest random opponents AI from a list." + NL
+					+ "If option is empty, the opponent AI is not changed." + NL
+					+ "If the option is \"random\" the opponent will be selected from the full race list." + NL
+					+ "If the option is \"GUI\" the opponent will be selected from the GUI AI FILTER list." + NL
+					+ "If the option is \"GAME\" the opponent will be selected from the GAME AI FILTER list." + NL
+					+ "If the option is \"random AI_1, AI_2, AI_N\"  the AI will be selected from the given list." + NL
+					+ "If the list is shorter than the number of opponents,"
+					+ " the last option will be applied to the remaining AI."
+					+ "The AI list must be written using \"/\" as separator." + NL
+					+ "!!! Don’t break the lines !!! even if they become very long..."
+					+ " There is no multi-line analysis."
+					+ NL);
+		}
+	}
+	// ==============================================================
+	// START PRESET AI
+	//
+	// GuiAIFilter is required
+	// 
+	/**
+	 * Management of random opponent AI filling at start
+	 */
+	public static class StartPresetAI extends
+			AbstractParameter <String, Valid_AIList, ClientClasses> {
+
+		// ==================================================
+		// Constructors and initializers
+		//
+		StartPresetAI(ClientClasses go) { 
+			super("START PRESET AI",
+					new Valid_AIList(
+							new T_String(getInitialAI(go))
+							, getAIOptionList(go)
+					)
+			);
+			
+			List<String> defaultValue = go.newOptions().specificOpponentAIOptions();
+			setHistoryCodeView(Initial, defaultValue); // set Current too
+			setHistoryCodeView(Default, defaultValue);
+		}
+		
+		// ========== Overriders ==========
+		//
+		@Override public AbstractT<String> getFromGame (ClientClasses go) {
+			return null;
+		}
+		
+		@Override public void putToGame(ClientClasses go, AbstractT<String> value) {}
+		
+		@Override public AbstractT<String> getFromUI (ClientClasses go) {
+			return new T_String().setFromCodeView(getAIFromGUI(go.newOptions()));
+		}
+		
+		@Override public void putToGUI(ClientClasses go, AbstractT<String> value) {
+			String[] selectedAIs = ((Valid_AIList) getValidation())
+										.analyze(go, value.getUserList(), true);
+			RaceFilter.startOpponentAI(selectedAIs);
+		}
+		
+		@Override public void initComments() {
+			setSettingComments(" " + NL
+					+ "To replace the random opponent AI generation when starting a new game." + NL
+					+ "If option is empty, the opponent AI will be randomly selected." + NL
+					+ "If the option is \"random\" the opponent AI will be selected from the full AI list." + NL
+					+ "If the option is \"GUI\" the opponent AI will be selected from the GUI AI FILTER list." + NL
+					+ "If the option is \"GAME\" the opponent AI will be selected from the GAME AI FILTER list." + NL
+					+ "If the option is \"random AI_1, AI_2, AI_N"
+					+ " the opponent AI will be selected from the given list." + NL
+					+ "If the list is shorter than the number of AI,"
+					+ " the last option will be applied to the remaining AI."
+					+ "The AI list must be written using \"/\" as separator." + NL
+					+ "!!! Don’t break the lines !!! even if they become very long..."
+					+ " There is no multi-line analysis."
+					+ NL);
+		}
+		// ========== Other Methods ==========
+		//
+		/**
+		 * @param go the ClientClass
+		 */
+		public void loadAIs(ClientClasses go) {
+			String[] selectedAIs = RaceFilter.startOpponentAI();
+			if (selectedAIs != null) {
+				int i=0;
+				for (String ai : selectedAIs) {
+					go.newOptions().specificOpponentAIOption(ai, i);
+					go.options().specificOpponentAIOption(ai, i);
+					i++;
+				}
+			}
+		}
+	}
 }

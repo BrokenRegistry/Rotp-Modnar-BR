@@ -66,10 +66,13 @@ public class UserPreferences {
     private static boolean displayYear = false;
     private static boolean governorOnByDefault = true;
     private static boolean governorAutoSpendByDefault = false;
+    private static boolean legacyGrowth = true; // BR:
+    private static boolean governorAutoApply = true; // BR:
     private static int customDifficulty = 100; // mondar: add custom difficulty level option, in units of percent
     private static boolean dynamicDifficulty = false; // modnar: add dynamic difficulty option, change AI colony production
     private static boolean alwaysStarGates = false; // modnar: add option to always have Star Gates tech
     private static boolean alwaysThorium = false; // modnar: add option to always have Thorium Cells tech
+    private static boolean alwaysIrradiated = false; // BR: add option to always have Control Irradiated tech
     private static boolean challengeMode = false; // modnar: add option to give AI more initial resources
     private static boolean randomTechStart = false; // modnar: add option to start all Empires with 2 techs, no Artifacts
     private static boolean battleScout = false; // modnar: add battleScout option to give player super Scout design
@@ -110,6 +113,7 @@ public class UserPreferences {
         dynamicDifficulty = false; // modnar: add dynamic difficulty option, change AI colony production
         alwaysStarGates = false; // modnar: add option to always have Star Gates tech
         alwaysThorium = false; // modnar: add option to always have Thorium Cells tech
+        alwaysIrradiated = false; // BR: add option to always have Control Irradiated tech
         challengeMode = false; // modnar: add option to give AI more initial resources
         randomTechStart = false; // modnar: add option to start all Empires with 2 techs, no Artifacts
         battleScout = false; // modnar: add battleScout option to give player super Scout design
@@ -138,6 +142,7 @@ public class UserPreferences {
         dynamicDifficulty = false; // modnar: add dynamic difficulty option, change AI colony production
         alwaysStarGates = false; // modnar: add option to always have Star Gates tech
         alwaysThorium = false; // modnar: add option to always have Thorium Cells tech
+        alwaysIrradiated = false; // BR: add option to always have Control Irradiated tech
         challengeMode = false; // modnar: add option to give AI more initial resources
         randomTechStart = false; // modnar: add option to start all Empires with 2 techs, no Artifacts
         battleScout = false; // modnar: add battleScout option to give player super Scout design
@@ -154,7 +159,8 @@ public class UserPreferences {
     }
     // BR setters and getter for Show Factors
     /**
-     * This Factor is used to adjust the fleet disappearance
+     * This Factor is used to adjust the fleet disappearance.
+     * The bigger the value, the longer it's shown.
      * @param newValue between 0.5 and 2.0
      */
     public static void setShowFleetFactor(float newValue) {
@@ -163,14 +169,16 @@ public class UserPreferences {
     	showFleetFactor = Math.min(max, Math.max(min, newValue));
     }
     /**
-     * This factor is used to adjust the fleet disappearance
+     * This factor is used to adjust the fleet disappearance.
+     * The bigger the value, the longer it's shown.
      * @return Scale factor between 0.5 and 2.0
      */
     public static Float getShowFleetFactor() {
     	return showFleetFactor;
     }
     /**
-     * This Factor is used to adjust the flag disappearance
+     * This Factor is used to adjust the flag disappearance.
+     * The bigger the value, the longer it's shown.
      * @param newValue between 0.5 and 2.0
      */
     public static void setShowFlagFactor(float newValue) {
@@ -179,14 +187,16 @@ public class UserPreferences {
     	showFlagFactor = Math.min(max, Math.max(min, newValue));
     }
     /**
-     * This factor is used to adjust the flag disappearance
+     * This factor is used to adjust the flag disappearance.
+     * The bigger the value, the longer it's shown.
      * @return Scale factor between 0.5 and 2.0
      */
     public static Float getShowFlagFactor() {
     	return showFlagFactor;
     }
     /**
-     * This Factor is used to adjust the path disappearance
+     * This Factor is used to adjust the path disappearance.
+     * The bigger the value, the longer it's shown.
      * @param newValue between 0.5 and 2.0
      */
     public static void setShowPathFactor(float newValue) {
@@ -195,14 +205,16 @@ public class UserPreferences {
     	showPathFactor = Math.min(max, Math.max(min, newValue));
     }
     /**
-     * This factor is used to adjust the path disappearance
+     * This factor is used to adjust the path disappearance.
+     * The bigger the value, the longer it's shown.
      * @return Scale factor between 0.5 and 2.0
      */
     public static Float getShowPathFactor() {
     	return showPathFactor;
     }
     /**
-     * This Factor is used to adjust the Star Name disappearance
+     * This Factor is used to adjust the Star Name disappearance.
+     * The smaller the value, the longer it's shown.
      * @param newValue between 2 and 24
      */
     public static void setShowNameMinFont(int newValue) {
@@ -211,14 +223,16 @@ public class UserPreferences {
     	showNameMinFont = Math.min(max, Math.max(min, newValue));
     }
     /**
-     * This factor is used to adjust the Star Name disappearance
+     * This factor is used to adjust the Star Name disappearance.
+     * The smaller the value, the longer it's shown.
      * @return Scale factor between 2 and 24
      */
     public static Integer getShowNameMinFont() {
     	return showNameMinFont;
     }
     /**
-     * This Font Size is used while displaying Star Name
+     * This Factor is used to adjust the info box disappearance.
+     * The bigger the value, the longer it's shown.
      * @param newValue between 0.25 and 2.0
      */
     public static void setShowInfoFontRatio(float newValue) {
@@ -227,14 +241,15 @@ public class UserPreferences {
     	showInfoFontRatio = Math.min(max, Math.max(min, newValue));
     }
     /**
-     * This Font Size is used while displaying Star Name
+     * This Factor is used to adjust the info box disappearance.
+     * The bigger the value, the longer it's shown.
       * @return Scale factor between 0.25 and 2.0
      */
     public static Float getShowInfoFontRatio() {
     	return showInfoFontRatio;
     }
     /**
-     * To adjust the Galaxy Map Font Size
+     * To adjust the Galaxy Map Font Size (Multiplier)
       * @param newValue between 0.5 and 2.0
      */
     public static void setMapFontFactor(float newValue) {
@@ -243,7 +258,7 @@ public class UserPreferences {
     	mapFontFactor = Math.min(max, Math.max(min, newValue));
     }
     /**
-     * To adjust the Galaxy Map Font Size
+     * To adjust the Galaxy Map Font Size (Multiplier)
      * @return Scale factor between 0.5 and 2.0
      */
     public static Float getMapFontFactor() {
@@ -252,6 +267,9 @@ public class UserPreferences {
     // \BR
 
     // BR setters for modnar parameters
+    public static void setAlwaysIrradiated(boolean newValue) {
+    	alwaysIrradiated = newValue;
+    }
     public static void setAlwaysStarGates(boolean newValue) {
     	alwaysStarGates = newValue;
     }
@@ -266,11 +284,11 @@ public class UserPreferences {
     }
     public static void setCompanionWorlds(int newValue) {
         companionWorlds = newValue;
-        if (companionWorlds > 4) {
-        	companionWorlds = 4;
+        if (companionWorlds > 6) { // BR: changed to 6; default = 4
+        	companionWorlds = 6;
         }
-        else if (companionWorlds < 0) {
-        	companionWorlds = 0;
+        else if (companionWorlds < -4) { // BR: changed to -4; default = 0
+        	companionWorlds = -4;
         }
     }
     public static void setRandomTechStart(boolean newValue) {
@@ -292,16 +310,24 @@ public class UserPreferences {
     	dynamicDifficulty = newValue; 
     } // \BR
     
+    public static void toggleAlwaysIrradiated() { alwaysIrradiated = !alwaysIrradiated; save(); } // BR
     // modnar: MOD option toggles, specifically for UI
     public static void toggleAlwaysStarGates()       { alwaysStarGates = !alwaysStarGates; save(); }
     public static void toggleAlwaysThorium()         { alwaysThorium = !alwaysThorium; save(); }
     public static void toggleChallengeMode()         { challengeMode = !challengeMode; save(); }
     public static void toggleBattleScout()           { battleScout = !battleScout; save(); }
-    public static void toggleCompanionWorlds()       {
-        if ((companionWorlds >= 4) || (companionWorlds < 0))
-            companionWorlds = 0;
-        else
-            companionWorlds++;
+    public static void toggleCompanionWorlds(boolean up) {// BR: made bidirectional
+    	if (up) {
+	        if ((companionWorlds >= 6) || (companionWorlds < -4)) // BR: changed to 6; default = 4
+	            companionWorlds = -4; // BR: changed to -4; default = 0
+	        else
+	            companionWorlds++;
+    	} else {
+	        if ((companionWorlds > 6) || (companionWorlds <= -4)) // BR: changed to 6; default = 4
+	            companionWorlds = 6; // BR: changed to -4; default = 0
+	        else
+	            companionWorlds--;    		
+    	}
         save();
     }
     public static void toggleRandomTechStart()       { randomTechStart = !randomTechStart; save(); }
@@ -435,11 +461,13 @@ public class UserPreferences {
     public static int customDifficulty()     { return customDifficulty; } // mondar: add custom difficulty level option, in units of percent
     public static boolean dynamicDifficulty() { return dynamicDifficulty; } // modnar: add dynamic difficulty option, change AI colony production
     public static boolean alwaysStarGates()  { return alwaysStarGates; } // modnar: add option to always have Star Gates tech
+    public static boolean alwaysIrradiated() { return alwaysIrradiated; } // BR: add option to always Control irradiated tech
     public static boolean alwaysThorium()    { return alwaysThorium; } // modnar: add option to always have Thorium Cells tech
     public static boolean challengeMode()    { return challengeMode; } // modnar: add option to give AI more initial resources
     public static boolean randomTechStart()  { return randomTechStart; } // modnar: add option to start all Empires with 2 techs, no Artifacts
     public static boolean battleScout()      { return battleScout; } // modnar: add battleScout option to give player super Scout design
-    public static int companionWorlds()      { return companionWorlds; } // modnar: add option to start game with additional colonies
+    public static int companionWorlds()      { return Math.abs(companionWorlds); } // modnar: add option to start game with additional colonies
+    public static int companionWorldsSigned() { return companionWorlds; } // BR: to manage old and new distribution
     public static float missileSizeModifier() { return missileSizeModifier; } 
     public static int retreatRestrictions() { return retreatRestrictions; }
     public static int retreatRestrictionTurns() { return retreatRestrictionTurns; }
@@ -484,6 +512,10 @@ public class UserPreferences {
     public static boolean governorOnByDefault() { return governorOnByDefault; }
     public static void setAutoSpendOn(boolean autospendOn)  { governorAutoSpendByDefault = autospendOn; save(); }
     public static boolean governorAutoSpendByDefault() { return governorAutoSpendByDefault; }
+    public static void setLegacyGrowth(boolean legacy_Growth)  { legacyGrowth = legacy_Growth; save(); } // BR:
+    public static boolean legacyGrowth() { return legacyGrowth; } // BR:
+    public static void setGovernorAutoApply(boolean auto_Apply)  { governorAutoApply = auto_Apply; save(); } // BR:
+    public static boolean governorAutoApply() { return governorAutoApply; } // BR:
     public static void setDivertColonyExcessToResearch(boolean divertOn)  {divertColonyExcessToResearch = divertOn; save(); }
     public static boolean divertColonyExcessToResearch()  { return divertColonyExcessToResearch; }
     public static boolean disableAdvisor() { return disableAdvisor; }
@@ -537,14 +569,16 @@ public class UserPreferences {
             out.println(keyFormat("GOVERNOR_ON_BY_DEFAULT") + yesOrNo(governorOnByDefault));
             out.println(keyFormat("AUTOSPEND_ON_BY_DEFAULT") + yesOrNo(governorAutoSpendByDefault));
             out.println(keyFormat("DIVERT_COLONY_EXCESS_TO_RESEARCH")+ yesOrNo(divertColonyExcessToResearch));
-            out.println(keyFormat("DISABLE_ADVISOR")+ yesOrNo(disableAdvisor));
             out.println(keyFormat("XILMI_ROLEPLAY_MODE") + yesOrNo(xilmiRoleplayMode));
+            out.println(keyFormat("GOVERNOR_AUTO_APPLY") + yesOrNo(governorAutoApply)); // BR:
+            out.println(keyFormat("DISABLE_ADVISOR")+ yesOrNo(disableAdvisor));
             out.println(keyFormat("SCREEN_SIZE_PCT")+ screenSizePct());
             out.println(keyFormat("UI_TEXTURE_LEVEL")+(int) (uiTexturePct()*100));
             out.println(keyFormat("CUSTOM_DIFFICULTY")+ customDifficulty); // mondar: add custom difficulty level option, in units of percent
             out.println(keyFormat("DYNAMIC_DIFFICULTY")+ yesOrNo(dynamicDifficulty)); // modnar: add dynamic difficulty option, change AI colony production
             out.println(keyFormat("ALWAYS_STAR_GATES")+ yesOrNo(alwaysStarGates)); // modnar: add option to always have Star Gates tech
             out.println(keyFormat("ALWAYS_THORIUM")+ yesOrNo(alwaysThorium)); // modnar: add option to always have Thorium Cells tech
+            out.println(keyFormat("ALWAYS_IRRADIATED")+ yesOrNo(alwaysIrradiated)); // BR: add option to always have Control Irradiated tech
             out.println(keyFormat("CHALLENGE_MODE")+ yesOrNo(challengeMode)); // modnar: add option to give AI more initial resources
             out.println(keyFormat("RANDOM_TECH_START")+ yesOrNo(randomTechStart)); // modnar: add option to start all Empires with 2 techs, no Artifacts
             out.println(keyFormat("BATTLE_SCOUT")+ yesOrNo(battleScout)); // modnar: add battleScout option to give player super Scout design
@@ -606,14 +640,16 @@ public class UserPreferences {
             case "GOVERNOR_ON_BY_DEFAULT": governorOnByDefault = yesOrNo(val); return;
             case "AUTOSPEND_ON_BY_DEFAULT": governorAutoSpendByDefault = yesOrNo(val); return;
             case "DIVERT_COLONY_EXCESS_TO_RESEARCH": divertColonyExcessToResearch = yesOrNo(val); return;
-            case "DISABLE_ADVISOR": disableAdvisor = yesOrNo(val); return;
             case "XILMI_ROLEPLAY_MODE": xilmiRoleplayMode = yesOrNo(val); return;
+            case "GOVERNOR_AUTO_APPLY": governorAutoApply = yesOrNo(val); return; // BR:
+            case "DISABLE_ADVISOR": disableAdvisor = yesOrNo(val); return;
             case "SCREEN_SIZE_PCT": screenSizePct(Integer.valueOf(val)); return;
             case "UI_TEXTURE_LEVEL": uiTexturePct(Integer.valueOf(val)); return;
             case "CUSTOM_DIFFICULTY": setCustomDifficulty(val); return; // mondar: add custom difficulty level option, in units of percent
             case "DYNAMIC_DIFFICULTY": dynamicDifficulty = yesOrNo(val); return; // modnar: add dynamic difficulty option, change AI colony production
             case "ALWAYS_STAR_GATES": alwaysStarGates = yesOrNo(val); return; // modnar: add option to always have Star Gates tech
             case "ALWAYS_THORIUM": alwaysThorium = yesOrNo(val); return; // modnar: add option to always have Thorium Cells tech
+            case "ALWAYS_IRRADIATED": alwaysIrradiated = yesOrNo(val); return; // BR: add option to always have Control Irradiated tech
             case "CHALLENGE_MODE": challengeMode = yesOrNo(val); return; // modnar: add option to give AI more initial resources
             case "RANDOM_TECH_START": randomTechStart = yesOrNo(val); return; // modnar: add option to start all Empires with 2 techs, no Artifacts
             case "BATTLE_SCOUT": battleScout = yesOrNo(val); return; // modnar: add battleScout option to give player super Scout design
@@ -643,8 +679,8 @@ public class UserPreferences {
     }
     // modnar: add option to start game with additional colonies
     private static void setNumCompanionWorlds(String s) {
-        int val = Integer.valueOf(s);
-        companionWorlds = Math.max(0, Math.min(4, val)); // max number of companion worlds is 4
+        int val = Integer.valueOf(s); // BR: changed limits; was 0 & 4
+        companionWorlds = Math.max(-4, Math.min(6, val)); // max number of companion worlds is 4
     }
     // modnar: add custom difficulty level option, in units of percent
     private static void setCustomDifficulty(String s) {
@@ -655,9 +691,15 @@ public class UserPreferences {
         float val = Float.valueOf(s);
         missileSizeModifier = Math.max(0.1f, Math.min(1, val));
     }
+    public static void setRetreatRestrictions(int val) { // BR: For Profile Manager
+        retreatRestrictions = Math.max(0, Math.min(3, val));
+    }
     private static void setRetreatRestrictions(String s) {
         int val = Integer.valueOf(s);
         retreatRestrictions = Math.max(0, Math.min(3, val));
+    }
+    public static void setRetreatRestrictionTurns(int val) { // BR: For Profile Manager
+        retreatRestrictionTurns = Math.max(0, Math.min(100, val));
     }
     private static void setRetreatRestrictionTurns(String s) {
         int val = Integer.valueOf(s);

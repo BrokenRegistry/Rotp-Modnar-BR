@@ -44,6 +44,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 	Group_Modnar(ClientClasses go) {
 		super(go, getHeadComments());
 	}
+	
 	private static String getHeadComments() {
 		return  " " + NL
 				+ "------------- Modnar's Options -------------" + NL
@@ -51,6 +52,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 	}
 
 	@Override protected void initSettingList(ClientClasses go) {
+		addParameter(new AlwaysIrradiated(go));
 		addParameter(new AlwaysStarGates(go));
 		addParameter(new AlwaysThorium(go));
 		addParameter(new ChallengeMode(go));
@@ -60,8 +62,58 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		addParameter(new CustomDifficulty(go));
 		addParameter(new DynamicDifficulty(go));
 		addParameter(new MissileSizeModifier(go));
+		addParameter(new RetreatRestrictions(go));
+		addParameter(new RetreatRestrictionTurns(go));
 	}
 
+	// ==============================================================
+	// ALWAYS IRRIDIATED
+	//
+	static class AlwaysIrradiated extends 
+			AbstractParameter <Boolean, Validation<Boolean>, ClientClasses> {
+
+		private String IrradiatedId = "ControlEnvironment:6";
+		private int IrradiatedCategory = 3;
+
+		AlwaysIrradiated(ClientClasses go) {
+			super( "ALWAYS IRRIDIATED",
+					new Validation<Boolean>(
+							new T_Boolean(UserPreferences.alwaysIrradiated())));
+
+			setHistoryCodeView(Default, false);
+		}
+		
+		@Override public AbstractT<Boolean> getFromGame (ClientClasses go) {
+			for (Empire empire : go.session().galaxy().empires()) {
+				List<String> techList = empire.tech()
+						.category(IrradiatedCategory).possibleTechs();			
+				if (!techList.contains(IrradiatedId)) {
+					return new T_Boolean(false);
+				}
+			}
+			return new T_Boolean(true);
+		}
+
+		@Override public void putToGame(ClientClasses go, AbstractT<Boolean> value) {
+			if (value.getCodeView()) {
+				for (Empire empire : go.session().galaxy().empires()) {
+				empire.tech().category(IrradiatedCategory).insertPossibleTech(IrradiatedId);
+				}
+			}
+		}
+		
+		@Override public AbstractT<Boolean> getFromUI (ClientClasses go) {
+			return new T_Boolean(UserPreferences.alwaysStarGates());
+		}
+		
+		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
+			UserPreferences.setAlwaysStarGates(value.getCodeView());
+		}
+		
+		@Override public void initComments() {
+			setBottomComments(availableForChange());
+		}
+	}
 	// ==============================================================
 	// ALWAYS STAR GATES
 	//
@@ -110,7 +162,6 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 			setBottomComments(availableForChange());
 		}
 	}
-	
 	// ==============================================================
 	// ALWAYS THORIUM
 	//
@@ -231,11 +282,11 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		CompanionWorlds(ClientClasses go) {
 			super("COMPANION WORLDS", 
 					new Validation<Integer>(
-							new T_Integer(UserPreferences.companionWorlds())));
+							new T_Integer(UserPreferences.companionWorldsSigned())));
 
 			setHistoryCodeView(Default, 0); // MODNAR DEFAULT
-			setLimits(0 , 4);
-			setDefaultRandomLimits(0 , 4);
+			setLimits(-4 , 6);
+			setDefaultRandomLimits(-4 , 6);
 		}
 		
 		@Override public AbstractT<Integer> getFromGame (ClientClasses go) {
@@ -245,7 +296,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		@Override public void putToGame(ClientClasses go, AbstractT<Integer> value) {}
 		
 		@Override public AbstractT<Integer> getFromUI (ClientClasses go) {
-			return new T_Integer(UserPreferences.companionWorlds());
+			return new T_Integer(UserPreferences.companionWorldsSigned());
 		}
 		
 		@Override public void putToGUI(ClientClasses go, AbstractT<Integer> value) {
@@ -389,6 +440,78 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 
 		@Override public void putToGUI(ClientClasses go, AbstractT<Float> value) {
 			UserPreferences.setMissileSizeModifier(value.getCodeView());
+		}
+
+		@Override public void initComments() {
+			setBottomComments(dynamicParameter());
+		}
+	}
+	// ==============================================================
+	// RETREAT RESTRICTIONS
+	//
+	static class RetreatRestrictions extends
+			AbstractParameter <Integer, Valid_IntegerWithList, ClientClasses> {
+
+		RetreatRestrictions(ClientClasses go) { 
+			super("RETREAT RESTRICTIONS", 
+					new Valid_IntegerWithList(
+							UserPreferences.retreatRestrictions()
+							, StartModOptionsUI.getRetreatRestrictionOptions()));	
+			setHistoryCodeView(Initial, UserPreferences.retreatRestrictions());
+			setHistoryCodeView(Default, 0);
+			setHistory(Current, Initial);
+		}
+
+		@Override public AbstractT<Integer> getFromGame (ClientClasses go) { // BR: Validate Dynamic 
+			return new T_Integer(UserPreferences.retreatRestrictions()); // Dynamic: Same as UserPreferences
+		}
+
+		@Override public void putToGame(ClientClasses go, AbstractT<Integer> value) {
+			UserPreferences.setRetreatRestrictions(value.getCodeView()); // Dynamic: Same as UserPreferences
+		}		
+
+		@Override public AbstractT<Integer> getFromUI (ClientClasses go) {
+			return new T_Integer(UserPreferences.retreatRestrictions());
+		}
+
+		@Override public void putToGUI(ClientClasses go, AbstractT<Integer> value) {
+			UserPreferences.setRetreatRestrictions(value.getCodeView());
+		}
+
+		@Override public void initComments() {
+			setBottomComments(dynamicParameter());
+		}
+	}
+	// ==============================================================
+	// RETREAT RESTRICTION TURNS
+	//
+	static class RetreatRestrictionTurns extends
+			AbstractParameter <Integer, Validation<Integer>, ClientClasses> {
+
+		RetreatRestrictionTurns(ClientClasses go) { 
+			super("RETREAT RESTRICTION TURNS", 
+					new Validation<Integer>(
+							new T_Integer(UserPreferences.retreatRestrictionTurns())));
+			
+			setHistoryCodeView(Default, 100); // XILMI DEFAULT
+			setLimits(0 , 100);
+			setDefaultRandomLimits(0 , 100);
+		}
+
+		@Override public AbstractT<Integer> getFromGame (ClientClasses go) {
+			return new T_Integer(UserPreferences.retreatRestrictionTurns()); // Dynamic: Same as UserPreferences
+		}
+
+		@Override public void putToGame(ClientClasses go, AbstractT<Integer> value) {
+			UserPreferences.setRetreatRestrictionTurns(value.getCodeView()); // Dynamic: Same as UserPreferences
+		}		
+
+		@Override public AbstractT<Integer> getFromUI (ClientClasses go) {
+			return new T_Integer(UserPreferences.retreatRestrictionTurns());
+		}
+
+		@Override public void putToGUI(ClientClasses go, AbstractT<Integer> value) {
+			UserPreferences.setRetreatRestrictionTurns(value.getCodeView());
 		}
 
 		@Override public void initComments() {

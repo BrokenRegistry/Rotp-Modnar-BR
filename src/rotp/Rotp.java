@@ -22,9 +22,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
 import java.awt.Image;
-import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -43,13 +41,11 @@ import rotp.util.ImageManager;
 
 public class Rotp {
     private static final int MB = 1048576;
-    public static final String version = "22.07.15";
+    public static final String version = "22.07.21";
     public static int IMG_W = 1229;
     public static int IMG_H = 768;
-    public static String jarFileName = "rotp-" + version + ".jar";
+    public static String jarFileName = "rotp-" + version + RotpGovernor.miniSuffix() + ".jar";
     public static String exeFileName = "rotp-" + version + ".exe";
-//    public static String jarFileName = "rotp-"+RotpGovernor.governorVersion()+RotpGovernor.miniSuffix()+".jar";
-//    public static String exeFileName = "Remnants.exe";
     public static boolean countWords = false;
     private static String startupDir;
     private static JFrame frame;
@@ -63,27 +59,7 @@ public class Rotp {
     public static boolean reloadRecentSave = false;
     
     static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-    // BR:
-    /**
-     * Get the scaling factor of the screen this game is running on
-     * May be used to adjust the to early disappearance of fleets
-     * @return the scaling factor
-     */
-    public static double getScalingFactor() {
-    	// This search is needed for the case a screen has been added after starting this program.
-    	GraphicsDevice myDevice = frame.getGraphicsConfiguration().getDevice();
-    	for(GraphicsDevice gd : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()){
-    	    if(frame.getLocation().getX() >= gd.getDefaultConfiguration().getBounds().getMinX() &&
-    	        frame.getLocation().getX() < gd.getDefaultConfiguration().getBounds().getMaxX() &&
-    	        frame.getLocation().getY() >= gd.getDefaultConfiguration().getBounds().getMinY() &&
-    	        frame.getLocation().getY() < gd.getDefaultConfiguration().getBounds().getMaxY())
-    	        myDevice=gd;
-    	}
-    	double physicalScreenWith = (double) myDevice.getDisplayMode().getWidth();
-    	double logicalScreenWith  = (double) myDevice.getDefaultConfiguration().getBounds().width;
-	    return physicalScreenWith / logicalScreenWith;
-    }
-    // \BR
+
     public static void main(String[] args) {
         frame = new JFrame("Remnants of the Precursors");
         String loadSaveFile = "";
@@ -236,11 +212,17 @@ public class Rotp {
     public static void restartFromLowMemory() {
         restartWithMoreMemory(frame, true);
     }
-    private static boolean restartWithMoreMemory(JFrame frame, boolean reload) {
+    @SuppressWarnings("restriction")
+	private static boolean restartWithMoreMemory(JFrame frame, boolean reload) {
+        // MXBeans are not supported by GraalVM Native, so skip this part
+        if (RotpGovernor.GRAALVM_NATIVE) {
+            System.out.println("Running as GraalVM Native image");
+            return false;
+        }
         long memorySize = ((com.sun.management.OperatingSystemMXBean) ManagementFactory
-                        .getOperatingSystemMXBean()).getTotalPhysicalMemorySize();
+                        .getOperatingSystemMXBean()).getTotalMemorySize(); // BR: updated deprecated
         long freeMemory = ((com.sun.management.OperatingSystemMXBean) ManagementFactory
-                        .getOperatingSystemMXBean()).getFreePhysicalMemorySize();
+        				.getOperatingSystemMXBean()).getFreeMemorySize();
         int maxMb = (int) (memorySize / MB);
         long allocMb = Runtime.getRuntime().maxMemory() / MB;
         int freeMb = (int) (freeMemory / MB);
